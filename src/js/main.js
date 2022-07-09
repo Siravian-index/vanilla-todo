@@ -7,21 +7,35 @@ const initForm = () => {
     const submitBtn = document.createElement('button');
     title.placeholder = 'To-do Name';
     title.id = 'title';
+    title.required = true;
     body.placeholder = 'Content';
     body.id = 'body';
+    body.required = true;
     submitBtn.innerText = 'Submit';
     form.append(title, body, submitBtn);
     root.append(form);
     return form;
 };
+const generateLI = (todo) => {
+    const li = document.createElement('li');
+    li.innerText = `title: ${todo.title} -> body: ${todo.body}`;
+    return li;
+};
+const cleanFields = (title, body) => {
+    title.value = '';
+    body.value = '';
+};
 const printToScreen = (todo) => {
-    const ul = document.querySelector('#list');
+    let ul = document.querySelector('#list');
     if (!ul) {
         const newUl = document.createElement('ul');
         const root = document.querySelector('#root');
         newUl.id = 'list';
+        ul = newUl;
         root.append(newUl);
     }
+    const li = generateLI(todo);
+    ul.append(li);
 };
 const handleSubmit = (form) => {
     form.addEventListener('submit', (event) => {
@@ -33,7 +47,9 @@ const handleSubmit = (form) => {
             console.log(newTodo);
             // fetch
             // printToScreen
+            printToScreen(newTodo);
             // clean fields
+            cleanFields(title, body);
         }
         // const [title, content] = form.children
         // console.log(title, content)

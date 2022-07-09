@@ -12,8 +12,11 @@ const initForm = () => {
 
   title.placeholder = 'To-do Name'
   title.id = 'title'
+  title.required = true
   body.placeholder = 'Content'
   body.id = 'body'
+  body.required = true
+
   submitBtn.innerText = 'Submit'
 
   form.append(title, body, submitBtn)
@@ -21,14 +24,29 @@ const initForm = () => {
   return form
 }
 
+const generateLI = (todo: todo) => {
+  const li = document.createElement('li')
+  li.innerText = `title: ${todo.title} -> body: ${todo.body}`
+
+  return li
+}
+
+const cleanFields = (title: HTMLInputElement, body: HTMLInputElement) => {
+  title.value = ''
+  body.value = ''
+}
+
 const printToScreen = (todo: todo) => {
-  const ul = document.querySelector('#list') as HTMLUListElement | null
+  let ul = document.querySelector('#list') as HTMLUListElement | null
   if (!ul) {
     const newUl = document.createElement('ul')
     const root = document.querySelector('#root') as HTMLDivElement
     newUl.id = 'list'
+    ul = newUl
     root.append(newUl)
   }
+  const li = generateLI(todo)
+  ul.append(li)
 }
 
 const handleSubmit = (form: HTMLFormElement) => {
@@ -37,12 +55,14 @@ const handleSubmit = (form: HTMLFormElement) => {
     const title: HTMLInputElement | null = document.querySelector('#title')
     const body: HTMLInputElement | null = document.querySelector('#body')
     if (title && body) {
-      const newTodo = { title: title.value, body: body.value }
+      const newTodo: todo = { title: title.value, body: body.value }
       console.log(newTodo)
-
       // fetch
+
       // printToScreen
+      printToScreen(newTodo)
       // clean fields
+      cleanFields(title, body)
     }
 
     // const [title, content] = form.children
